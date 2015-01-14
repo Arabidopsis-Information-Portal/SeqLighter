@@ -12,7 +12,7 @@ return declare( JBrowsePlugin,
 {
 
     constructor: function( args ) {
-        console.log("loaded SeqLighter plugin");
+        console.log("Loaded SeqLighter plugin");
         var thisB = this;
         var browser = this.browser;  // this.browser set in Plugin superclass constructor
         [
