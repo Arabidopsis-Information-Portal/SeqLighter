@@ -1,7 +1,7 @@
 /**
  * Description
- * @param {trackObject,featureObject,divObject} 
- * @returns {container} 
+ * @param {trackObject,featureObject,divObject}
+ * @returns {container}
  */
 function SequenceViewer( track,feature,div){
 
@@ -23,7 +23,7 @@ function SequenceViewer( track,feature,div){
     var exonArray = [];
     var utrArray = [];
     var cdsArray = [];
-    
+
     //Assign strand
     if(strand == 1){
 	dir = "forward";
@@ -32,8 +32,8 @@ function SequenceViewer( track,feature,div){
     }
 
     var container = container || dojo.create('div', { className: 'sequenceViewerContainer', innerHTML: '' } );
-    var title_container = dojo.create('div', { className: 'sequenceViewer_header', innerHTML: '<img src="img/seqlighter_logo.png" height="35px">'}, container );
-    var user_guide = dojo.create('div', { className: 'sequenceViewer_helpguide', innerHTML: '<a href="docs/SeqLighter_v1.0_UserGuide.pdf"><img src="img/qmark.jpg">&nbsp;User Guideline</a>'}, title_container );
+    var title_container = dojo.create('div', { className: 'sequenceViewer_header', innerHTML: '<img src="plugins/SeqLighter/img/seqlighter_logo.png" height="35px">'}, container );
+    var user_guide = dojo.create('div', { className: 'sequenceViewer_helpguide', innerHTML: '<a href="plugins/SeqLighter/docs/SeqLighter_v1.0_UserGuide.pdf"><img src="plugins/SeqLighter/img/qmark.jpg">&nbsp;User Guideline</a>'}, title_container );
     var field_container = dojo.create('div', { className: 'sequenceViewer_topFields' }, container );
     var table_container = dojo.create('div', { className: 'sequenceViewer_tableContainer'}, field_container );
     var metaTable = dojo.create('table', { className: 'field_metadata_table'}, table_container );
@@ -50,39 +50,39 @@ function SequenceViewer( track,feature,div){
     var utr_i = 0;
     var cds_i = 0;
 
-    for (var i = 0; i < arrayLength; i++) {	    
-	
+    for (var i = 0; i < arrayLength; i++) {
+
 	if(subfeatures[i].get('type') == 'exon'){
-	    
+
 	    var id = subfeatures[i].get('id');
 	    var coord = subfeatures[i].get('start')+'-'+subfeatures[i].get('end');
 	    var start_coord = subfeatures[i].get('start');
 	    var end_coord = subfeatures[i].get('end');
-	    
+
 	    exonArray[exon_i] = {'start': start_coord, 'end': end_coord, 'strand':strand};
-	    exon_i++;	
+	    exon_i++;
 	}
 
 	if(subfeatures[i].get('type') == 'CDS'){
-	    
+
 	    var start_coord = subfeatures[i].get('start');
 	    var end_coord = subfeatures[i].get('end');
-	    
+
 	    cdsArray[cds_i] = {'start':start_coord,'end':end_coord};
-	    cds_i++;	
+	    cds_i++;
 	}
 
 	if(subfeatures[i].get('type') == 'five_prime_UTR'){
 
-	    var start_coord = subfeatures[i].get('start');		
+	    var start_coord = subfeatures[i].get('start');
 	    var end_coord = subfeatures[i].get('end');
 
 	    utrArray[utr_i] = {'start': start_coord, 'end': end_coord, 'strand': strand};
 	    utr_i++;
 	}
-	
+
 	if(subfeatures[i].get('type') == 'three_prime_UTR'){
-	    
+
 	    var start_coord = subfeatures[i].get('start');
 	    var end_coord = subfeatures[i].get('end');
 
@@ -90,7 +90,7 @@ function SequenceViewer( track,feature,div){
 	    utr_i++;
 	}
     }
-    
+
     //sort exon array
     exonArray = sortArray(exonArray);
 
@@ -103,7 +103,7 @@ function SequenceViewer( track,feature,div){
 
 	    var nextstart_coord = exonArray[i+1].start;
 	    var nextend_coord = exonArray[i+1].end;
-	    
+
 	    if(strand == 1){
 		intronArray[intron_i] = {'start':end_coord,'end':nextstart_coord, 'strand':strand};
 	    }else{
@@ -122,25 +122,25 @@ function SequenceViewer( track,feature,div){
 	    id: "test_mk1",
 	    innerHTML: ''
 	},container);
- 
-    testDisplay(track,feature,exonArray,intronArray,cdsArray,utrArray,legend_container,container);  
-    
+
+    testDisplay(track,feature,exonArray,intronArray,cdsArray,utrArray,legend_container,container);
+
     return container;
 }
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function sortArray(unsortedArray) {
-    
+
     var sortedArray = [];
     var keyArray = [];
     var tmpArray = [];
     var strand = 1;
 
-    for (var i = 0; i < unsortedArray.length; i++) {	
+    for (var i = 0; i < unsortedArray.length; i++) {
 	var start_coord = unsortedArray[i].start;
 	var end_coord = unsortedArray[i].end;
 	strand = unsortedArray[i].strand;
@@ -156,14 +156,14 @@ function sortArray(unsortedArray) {
 	var end_coord = keyArray[start_coord];
 	sortedArray[i] = {'start':start_coord,'end':end_coord, 'strand':strand};
     }
-    
+
     return sortedArray;
 }
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function testDisplay(track,feature,exonArray,intronArray,cdsArray,utrArray,legend_container,container){
 
@@ -180,9 +180,9 @@ function testDisplay(track,feature,exonArray,intronArray,cdsArray,utrArray,legen
 
 	    refSeqStore.getReferenceSequence(
 		{ ref: track.store.args.browser.refSeq.name, start: start_coord-4000, end: end_coord+4000},
-		
+
 		dojo.hitch( this, function ( seq ){
-		 		    
+
 		    if(strand == '-1'){
 			seq = revcom(seq);
 		    }
@@ -203,7 +203,7 @@ function testDisplay(track,feature,exonArray,intronArray,cdsArray,utrArray,legen
 		    var cds1_end;
 		    var cdsLast_end = 0;
 		    var cdsLast_start = 0;
-		    
+
 		    if(cdsArray.length > 0 ){
 			cds1_start = cdsArray[0].start;
 			cds1_end = cdsArray[0].end;
@@ -212,11 +212,11 @@ function testDisplay(track,feature,exonArray,intronArray,cdsArray,utrArray,legen
 		    }
 
 		    if(strand == 1){
-			
+
 			adjusted_start_5prime = cds1_start - start_coord;
 			window.orig_adjusted_start_5prime = adjusted_start_5prime;
 			window.adjusted_start_5prime = window.orig_adjusted_start_5prime;
-		    
+
 		    }else{
 
 			adjusted_start_5prime = (end_coord - start_coord) - (cdsLast_end - start_coord)
@@ -241,9 +241,9 @@ function testDisplay(track,feature,exonArray,intronArray,cdsArray,utrArray,legen
 			window.orig_adjusted_end_3prime = adjusted_end_3prime;
 			window.adjusted_end_3prime = window.orig_adjusted_end_3prime;
 		    }
-		    
-		    start_seq = targetSeq.substr(window.orig_adjusted_start_5prime,3);		   
-		    end_seq = targetSeq.substr(window.orig_adjusted_end_3prime,3);		    
+
+		    start_seq = targetSeq.substr(window.orig_adjusted_start_5prime,3);
+		    end_seq = targetSeq.substr(window.orig_adjusted_end_3prime,3);
 
 		    highlightExons(BioJsObject,legend_container,exonArray,utrArray,start_coord,end_coord,targetSeq);
 		    highlightUtrs(BioJsObject,legend_container,utrArray,start_coord,end_coord,targetSeq);
@@ -261,12 +261,12 @@ function testDisplay(track,feature,exonArray,intronArray,cdsArray,utrArray,legen
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function downloadButton(BioJsObject,legend_container, container){
 
-    var instruct_text = dojo.create('div',{className:'DownloadText', innerHTML: '<a href="Javascript:DownloadText()"><img src="img/qmark.jpg"></a>&nbsp;<span style="color:#000080"><b>To download:</b></span>  '}, legend_container );
+    var instruct_text = dojo.create('div',{className:'DownloadText', innerHTML: '<a href="Javascript:DownloadText()"><img src="plugins/SeqLighter/img/qmark.jpg"></a>&nbsp;<span style="color:#000080"><b>To download:</b></span>  '}, legend_container );
 
     var downloadSelect = new dijit.form.Select({
         name: "DownloadSelect",
@@ -304,9 +304,9 @@ function downloadButton(BioJsObject,legend_container, container){
 
 	img.onload = function() {
 	    ctx.drawImage(img, 0, 0);
-	    
+
 	    var imgtype = '';
-	    
+
 	    if(formatType == 'png'){
 		imgtype = canvas.toDataURL("image/png");
 	    }else if (formatType == 'svg') {
@@ -316,13 +316,13 @@ function downloadButton(BioJsObject,legend_container, container){
 	    }else if (formatType == 'jpeg'){
 		imgtype = canvas.toDataURL("image/jpg");
 	    }
-	    
+
 	    var button = document.getElementById('downloadimg');
 	    button.href = imgtype;
-	    
+
 	};
 	img.src = url;
-	
+
 	if(formatType == 'none'){
 	    dijit.byId("DownloadButton").setAttribute('disabled', true);
 
@@ -336,8 +336,8 @@ function downloadButton(BioJsObject,legend_container, container){
 	iconClass: "dijitRadioIcon",
 	id: "DownloadButton",
 	disabled: true,
-	onClick: function(){    	   
-	    
+	onClick: function(){
+
 	},
 	label: "Download"
     }, "toggleButtonProgrammatic");
@@ -347,8 +347,8 @@ function downloadButton(BioJsObject,legend_container, container){
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function reverseComplement(BioJsObject,legend_container,targetSeq,revseq){
 
@@ -356,7 +356,7 @@ function reverseComplement(BioJsObject,legend_container,targetSeq,revseq){
 	checked: false,
 	iconClass: "dijitRadioIcon",
 	id: "doRevSeq",
-	onClick: function(){    
+	onClick: function(){
 
 	    if(dijit.byId("doRevSeq").checked){
 
@@ -365,7 +365,7 @@ function reverseComplement(BioJsObject,legend_container,targetSeq,revseq){
 		dijit.byId("highlightIntrons").set('checked', false);
 		dijit.byId("highlightUtrs").set('checked', false);
 		dijit.byId("annotateSS").set('checked', false);
-		
+
 		//disable button
 		dijit.byId("annotateSS").setAttribute('disabled', true);
 		dijit.byId("highlightUtrs").setAttribute('disabled', true);
@@ -400,12 +400,12 @@ function reverseComplement(BioJsObject,legend_container,targetSeq,revseq){
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function reverseComplement_flanking(BioJsObject,legend_container,targetSeq,revseq,newid_flanking,newid_flanking_rc){
 
-     dijit.byId('doRevSeq').attr('onClick', function(){    
+     dijit.byId('doRevSeq').attr('onClick', function(){
 
 	    if(dijit.byId("doRevSeq").checked){
 
@@ -445,13 +445,13 @@ function reverseComplement_flanking(BioJsObject,legend_container,targetSeq,revse
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function resetSequence(BioJsObject,legend_container,seq,targetSeqLen,exonArray,intronArray,utrArray,start_coord,end_coord,targetSeq,strand){
 
-    var instruct_text = dojo.create('div',{className:'FlankingText', innerHTML: '<a href="Javascript:flankingText()"><img src="img/qmark.jpg"></a>&nbsp;<span style="color:#000080"><b>Add flanking region:</b></span>  '}, legend_container );
-   
+    var instruct_text = dojo.create('div',{className:'FlankingText', innerHTML: '<a href="Javascript:flankingText()"><img src="plugins/SeqLighter/img/qmark.jpg"></a>&nbsp;<span style="color:#000080"><b>Add flanking region:</b></span>  '}, legend_container );
+
     var bufferValue = 0;
 
     var flankingRegionSelect = new dijit.form.Select({
@@ -475,9 +475,9 @@ function resetSequence(BioJsObject,legend_container,seq,targetSeqLen,exonArray,i
 
 	window.adjusted_start_5prime = window.orig_adjusted_start_5prime + Number(bufferValue) ;
 	window.adjusted_end_3prime = window.orig_adjusted_end_3prime + Number(bufferValue);
-	
+
 	var newSeq = seq.substr((4000-bufferValue),(targetSeqLen+(bufferValue*2)));
-	var start_seq = seq.substr((0+4000-bufferValue),3);		   
+	var start_seq = seq.substr((0+4000-bufferValue),3);
 	var end_seq = seq.substr((4000+targetSeqLen+bufferValue)-3,3);
 
 	//uncheck if checked
@@ -516,22 +516,22 @@ function resetSequence(BioJsObject,legend_container,seq,targetSeqLen,exonArray,i
  */
 function revcom(seq) {
 
-    var compl_rx   = /[ACGT]/gi; 
+    var compl_rx   = /[ACGT]/gi;
     var compl_tbl  = {"S":"S","w":"w","T":"A","r":"y","a":"t","N":"N","K":"M","x":"x","d":"h","Y":"R","V":"B","y":"r","M":"K","h":"d","k":"m","C":"G","g":"c","t":"a","A":"T","n":"n","W":"W","X":"X","m":"k","v":"b","B":"V","s":"s","H":"D","c":"g","D":"H","b":"v","R":"Y","G":"C"};
-    
+
     var nbsp = String.fromCharCode(160);
     var compl_func = function(m) { return compl_tbl[m] || nbsp; };
 
     var compl_seq = seq.replace( compl_rx, compl_func );
     var revseq = compl_seq.split('').reverse().join('');
-    
+
     return revseq;
 }
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function showThis(theSequence,id){
 
@@ -543,14 +543,14 @@ function showThis(theSequence,id){
         annotations: [],
 	highlights : []
     });
-    
+
     return mySequence;
 }
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function highlightUtrs(BioJsObject,legend_container,utrArray,featStart,featEnd,targetSeq){
 
@@ -558,11 +558,11 @@ function highlightUtrs(BioJsObject,legend_container,utrArray,featStart,featEnd,t
 	checked: false,
 	iconClass: "dijitRadioIcon",
 	id: "highlightUtrs",
-	onClick: function(){    
-	    if(dijit.byId("highlightUtrs").checked){    
-		
+	onClick: function(){
+	    if(dijit.byId("highlightUtrs").checked){
+
 		for (var i = 0; i < utrArray.length; i++) {
-		
+
 		    var adjusted_start = 0;
 		    var adjusted_end = 0;
 
@@ -570,7 +570,7 @@ function highlightUtrs(BioJsObject,legend_container,utrArray,featStart,featEnd,t
 
 			adjusted_start = utrArray[i].start - featStart + 1;
 			adjusted_end = utrArray[i].end - featStart;
-			
+
 		    }else{
 
 			adjusted_start = (featEnd - featStart) - (utrArray[i].end - featStart) + 1;
@@ -590,43 +590,43 @@ function highlightUtrs(BioJsObject,legend_container,utrArray,featStart,featEnd,t
 	},
 	label: "Highlight UTRs"
     }, "toggleButtonProgrammatic");
-    showUtrButton.placeAt(legend_container,"second");    
+    showUtrButton.placeAt(legend_container,"second");
 }
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function highlightUtrs_flanking(BioJsObject,legend_container,utrArray,featStart,featEnd,newSeq, bufferValue){
 
-    dijit.byId('highlightUtrs').attr('onClick',function(){    
-	if(dijit.byId("highlightUtrs").checked){    
-	    
+    dijit.byId('highlightUtrs').attr('onClick',function(){
+	if(dijit.byId("highlightUtrs").checked){
+
 	    for (var i = 0; i < utrArray.length; i++) {
-		
+
 		var adjusted_start = 0;
 		var adjusted_end = 0;
-		
+
 		    if(utrArray[i].strand == 1){
-			
+
 			adjusted_start = utrArray[i].start - featStart + 1 + Number(bufferValue);
 			adjusted_end = utrArray[i].end - featStart + Number(bufferValue);
-			
+
 		    }else{
-			
+
 			adjusted_start = (featEnd - featStart) - (utrArray[i].end - featStart) + 1 + Number(bufferValue);
 			adjusted_end = (featEnd - featStart) - (utrArray[i].start - featStart) + Number(bufferValue);
 		    }
-		
+
 		BioJsObject.addHighlight( { "start": adjusted_start, "end": adjusted_end, "color": "white", "background": "#FFA366", "id": "utr"+i } );
-	    }	    
+	    }
 	}
 	else{
 	    for (var i = 0; i < utrArray.length; i++) {
-		
+
 		BioJsObject.removeHighlight("utr"+i);
-	    }	    
+	    }
 	}
     }
  );
@@ -635,8 +635,8 @@ function highlightUtrs_flanking(BioJsObject,legend_container,utrArray,featStart,
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function highlightExons(BioJsObject,legend_container,exonArray,utrArray,featStart,featEnd,targetSeq){
 
@@ -644,19 +644,19 @@ function highlightExons(BioJsObject,legend_container,exonArray,utrArray,featStar
 	checked: false,
 	iconClass: "dijitRadioIcon",
 	id: "highlightExons",
-	onClick: function(){    
-	    if(dijit.byId("highlightExons").checked){    
+	onClick: function(){
+	    if(dijit.byId("highlightExons").checked){
 
 		//remove the following highlights first if enabled
 		if(dijit.byId("highlightUtrs").checked){
-		    for (var i = 0; i < utrArray.length; i++) {	
+		    for (var i = 0; i < utrArray.length; i++) {
 			BioJsObject.removeHighlight("utr"+i);
 		    }
 		}
 		if(dijit.byId("annotateSS").checked){
 		    BioJsObject.removeHighlight("Start");
 		    BioJsObject.removeHighlight("Stop");
-		}		
+		}
 
 		for (var i = 0; i < exonArray.length; i++) {
 
@@ -678,25 +678,25 @@ function highlightExons(BioJsObject,legend_container,exonArray,utrArray,featStar
 	    	if(dijit.byId("highlightUtrs").checked){
 
 		    for (var i = 0; i < utrArray.length; i++) {
-			
+
 			var adjusted_start = 0;
 			var adjusted_end = 0;
-			
+
 			if(utrArray[i].strand == 1){
-			    
+
 			    adjusted_start = utrArray[i].start - featStart + 1;
 			    adjusted_end = utrArray[i].end - featStart;
-			    
+
 			}else{
-			    
+
 			    adjusted_start = (featEnd - featStart) - (utrArray[i].end - featStart) + 1;
 			    adjusted_end = (featEnd - featStart) - (utrArray[i].start - featStart);
 			}
-			
+
 			BioJsObject.addHighlight( { "start": adjusted_start, "end": adjusted_end, "color": "white", "background": "#FFA366", "id": "utr"+i } );
 		    }
 		}
-		
+
 		if(dijit.byId("annotateSS").checked){
 		    BioJsObject.addHighlight( { "start": window.start_beg, "end": window.start_end, "color": "white", "background": "green", "id": "Start" } );
 		    BioJsObject.addHighlight( { "start": window.stop_beg, "end": window.stop_end, "color": "white", "background": "red", "id": "Stop" } );
@@ -710,19 +710,19 @@ function highlightExons(BioJsObject,legend_container,exonArray,utrArray,featStar
 	},
 	label: "Highlight Exons"
     }, "toggleButtonProgrammatic");
-    showExonButton.placeAt(legend_container,"second");    
+    showExonButton.placeAt(legend_container,"second");
 }
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function highlightExons_flanking(BioJsObject,legend_container,exonArray,utrArray,featStart,featEnd,newSeq,bufferValue,newid_flanking){
 
-     dijit.byId('highlightExons').attr('onClick', function(){    
-	    if(dijit.byId('highlightExons').checked){    
-		
+     dijit.byId('highlightExons').attr('onClick', function(){
+	    if(dijit.byId('highlightExons').checked){
+
 		//remove the following highlights first if enabled
 		if(dijit.byId("highlightUtrs").checked){
 		    BioJsObject.removeHighlight("5primeUtr");
@@ -731,7 +731,7 @@ function highlightExons_flanking(BioJsObject,legend_container,exonArray,utrArray
 		if(dijit.byId("annotateSS").checked){
 		    BioJsObject.removeHighlight("Start");
 		    BioJsObject.removeHighlight("Stop");
-		}	
+		}
 
 		for (var i = 0; i < exonArray.length; i++) {
 
@@ -748,30 +748,30 @@ function highlightExons_flanking(BioJsObject,legend_container,exonArray,utrArray
 
 		    BioJsObject.addHighlight( { "start": adjusted_start, "end": adjusted_end, "color": "white", "background": "#5CBEFF", "id": "exon"+i } )
 		}
-		
+
 		//add back highlights for Utrs and/or Start/Stop
 		if(dijit.byId("highlightUtrs").checked){
-		    
+
 		    for (var i = 0; i < utrArray.length; i++) {
-			
+
 			var adjusted_start = 0;
 			var adjusted_end = 0;
-			
+
 			if(utrArray[i].strand == 1){
-			    
+
 			    adjusted_start = utrArray[i].start - featStart + 1 + Number(bufferValue);
 			    adjusted_end = utrArray[i].end - featStart + Number(bufferValue);
-			    
+
 			}else{
-			    
+
 			    adjusted_start = (featEnd - featStart) - (utrArray[i].end - featStart) + 1 + Number(bufferValue);
 			    adjusted_end = (featEnd - featStart) - (utrArray[i].start - featStart) + Number(bufferValue);
 			}
-			
+
 			BioJsObject.addHighlight( { "start": adjusted_start, "end": adjusted_end, "color": "white", "background": "#FFA366", "id": "utr"+i } );
 		    }
 		}
-		
+
 		if(dijit.byId("annotateSS").checked){
 		    BioJsObject.addHighlight( { "start": window.start_beg, "end": window.start_end, "color": "white", "background": "green", "id": "Start" } );
 		    BioJsObject.addHighlight( { "start": window.stop_beg, "end": window.stop_end, "color": "white", "background": "red", "id": "Stop" } );
@@ -787,8 +787,8 @@ function highlightExons_flanking(BioJsObject,legend_container,exonArray,utrArray
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function highlightIntrons(BioJsObject,legend_container,intronArray,featStart,featEnd,targetSeq){
 
@@ -796,10 +796,10 @@ function highlightIntrons(BioJsObject,legend_container,intronArray,featStart,fea
 	checked: false,
 	iconClass: "dijitRadioIcon",
 	id: "highlightIntrons",
-	onClick: function(){    
+	onClick: function(){
 	    var IDS = new Array();
 
-	    if(dijit.byId("highlightIntrons").checked){    
+	    if(dijit.byId("highlightIntrons").checked){
 
 		for (var i = 0; i < intronArray.length; i++) {
 
@@ -807,12 +807,12 @@ function highlightIntrons(BioJsObject,legend_container,intronArray,featStart,fea
 		    var adjusted_end = 0;
 
 		    if(intronArray[i].strand == 1){
-			
+
 			adjusted_start = intronArray[i].start - featStart + 1;
 			adjusted_end = intronArray[i].end - featStart;
-			
+
 		    }else{
-			
+
 			adjusted_start = (featEnd - featStart) - (intronArray[i].end - featStart) + 1;
 			adjusted_end = (featEnd - featStart) - (intronArray[i].start - featStart);
 		    }
@@ -823,7 +823,7 @@ function highlightIntrons(BioJsObject,legend_container,intronArray,featStart,fea
 	    else{
 		for (var i = 0; i < intronArray.length; i++) {
 		    BioJsObject.removeHighlight("intron"+i);
-		}		
+		}
 	    }
 	},
 	label: "Highlight Introns"
@@ -833,15 +833,15 @@ function highlightIntrons(BioJsObject,legend_container,intronArray,featStart,fea
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function highlightIntrons_flanking(BioJsObject,legend_container,intronArray,featStart,featEnd,newSeq,bufferValue,newid_flanking){
 
-     dijit.byId('highlightIntrons').attr('onClick', function(){    
+     dijit.byId('highlightIntrons').attr('onClick', function(){
 	    var IDS = new Array();
 
-	    if(dijit.byId("highlightIntrons").checked){    
+	    if(dijit.byId("highlightIntrons").checked){
 
 		for (var i = 0; i < intronArray.length; i++) {
 
@@ -849,12 +849,12 @@ function highlightIntrons_flanking(BioJsObject,legend_container,intronArray,feat
 		    var adjusted_end;
 
 		    if(intronArray[i].strand == 1){
-			
+
 			adjusted_start = intronArray[i].start - featStart + 1 + Number(bufferValue);
 			adjusted_end = intronArray[i].end - featStart + Number(bufferValue);
-			
+
 		    }else{
-			
+
 			adjusted_start = (featEnd - featStart) - (intronArray[i].end - featStart) + 1 + Number(bufferValue);
 			adjusted_end = (featEnd - featStart) - (intronArray[i].start - featStart) + Number(bufferValue);
 		    }
@@ -865,7 +865,7 @@ function highlightIntrons_flanking(BioJsObject,legend_container,intronArray,feat
 	    else{
 		for (var i = 0; i < intronArray.length; i++) {
 		    BioJsObject.removeHighlight("intron"+i);
-		}		
+		}
 	    }
 	}
     );
@@ -873,8 +873,8 @@ function highlightIntrons_flanking(BioJsObject,legend_container,intronArray,feat
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function annotateStartStop( BioJsObject,legend_container,seqlen,start_seq,end_seq){
 
@@ -892,15 +892,15 @@ function annotateStartStop( BioJsObject,legend_container,seqlen,start_seq,end_se
 	checked: false,
 	iconClass: "dijitRadioIcon",
 	id: "annotateSS",
-	onClick: function(){    
+	onClick: function(){
 	    var IDS = new Array();
 
-	    if(dijit.byId("annotateSS").checked){    
+	    if(dijit.byId("annotateSS").checked){
 		if(start_seq == 'ATG'){
 
 		    BioJsObject.addHighlight( { "start": start_beg, "end": start_end, "color": "white", "background": "green", "id": "Start" } );
 		}
-		
+
 		if(end_seq == 'TAA' || end_seq == 'TGA' || end_seq == 'TAG'){
 
 		    BioJsObject.addHighlight( { "start": stop_beg, "end": stop_end, "color": "white", "background": "red", "id": "Stop" } );
@@ -919,8 +919,8 @@ function annotateStartStop( BioJsObject,legend_container,seqlen,start_seq,end_se
 
 /**
  * Description
- * @param {String} 
- * @returns {String} 
+ * @param {String}
+ * @returns {String}
  */
 function annotateStartStop_flanking( BioJsObject,legend_container,newSeq,strand){
 
@@ -933,24 +933,24 @@ function annotateStartStop_flanking( BioJsObject,legend_container,newSeq,strand)
     window.start_end = start_end;
     window.stop_beg = stop_beg;
     window.stop_end = stop_end;
-    
-    start_seq = newSeq.substr(window.adjusted_start_5prime,3);		   
-    end_seq = newSeq.substr(window.adjusted_end_3prime,3);	
 
-    dijit.byId('annotateSS').attr('onClick',function(){    
+    start_seq = newSeq.substr(window.adjusted_start_5prime,3);
+    end_seq = newSeq.substr(window.adjusted_end_3prime,3);
+
+    dijit.byId('annotateSS').attr('onClick',function(){
 	var IDS = new Array();
-	
-	if(dijit.byId("annotateSS").checked){    
+
+	if(dijit.byId("annotateSS").checked){
 	    if(start_seq == 'ATG'){
-		
+
 		BioJsObject.addHighlight( { "start": start_beg, "end": start_end, "color": "white", "background": "green", "id": "Start" } );
 	    }
-	    
+
 	    if(end_seq == 'TAA' || end_seq == 'TGA' || end_seq == 'TAG'){
 
 		BioJsObject.addHighlight( { "start": stop_beg, "end": stop_end, "color": "white", "background": "red", "id": "Stop" } );
 
-	    }   
+	    }
 	}
 	else{
 	    BioJsObject.removeHighlight("Start");
