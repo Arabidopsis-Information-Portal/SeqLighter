@@ -1,0 +1,3 @@
+[submodule "jslib/biojs"]
+	path = jslib/biojs
+	url = https://github.com/Arabidopsis-Information-Portal/biojs1
