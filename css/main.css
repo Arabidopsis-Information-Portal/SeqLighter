@@ -69,6 +69,11 @@
 
 }
 
+.sequenceViewer_legendContainer .dijitButtonNode {
+    border: 0px;
+    padding: 0px;
+}
+
 .sequenceViewer_sequenceContainer {
     font-family: monaco;
     height: 150px;
