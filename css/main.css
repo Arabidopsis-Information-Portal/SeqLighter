@@ -16,14 +16,14 @@
     width: 790px;
     color: #000080;
     padding-bottom: 5px;
-    
+
 }
 
 .sequenceViewer_helpguide {
     float: right;
     font-size: 14px;
     color: #000080;
-    padding-bottom: 5px;    
+    padding-bottom: 5px;
 }
 
 .sequenceViewer_tableContainer {
@@ -70,7 +70,7 @@
 }
 
 .sequenceViewer_sequenceContainer {
-    font-family: monaco; 
+    font-family: monaco;
     height: 150px;
     width: 680px;
     padding-left:10px;
@@ -80,7 +80,7 @@
 
 .dijitRadioIcon{
     /* outer shadows  (note the rgba is red, green, blue, alpha) */
-    -webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4); 
+    -webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 0px 2px 8px rgba(23, 69, 88, .5);
 }
 
@@ -112,15 +112,6 @@
 
   background: #5CBEFF;
   text-decoration: none;
-}
-
-.dijitButtonNode {
-    border: 0px;
-}
-
-.tundra .dijitButtonNode {
-    border: 0px;
-    padding: 0px;
 }
 
 #doRevSeq {
@@ -346,24 +337,24 @@
        background-color: #BDD3FF;
        color: #fff;
    }
-    
+
    /*** Mozilla based browsers ***/
    ::-moz-selection {
        background-color: #BDD3FF;
       color: #fff;
   }
-   
+
   /***For Other Browsers ***/
   ::-o-selection {
       background-color: #BDD3FF;
       color: #fff;
   }
-   
+
   ::-ms-selection {
       background-color: #BDD3FF;
       color: #fff;
   }
-   
+
   /*** For Webkit ***/
   ::-webkit-selection {
       background-color: #BDD3FF;
