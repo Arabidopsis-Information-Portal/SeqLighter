@@ -1,6 +1,10 @@
 ![AIP][1] SeqLighter v1.0
 ---
 
+### How to Cite
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.49369.svg)](http://dx.doi.org/10.5281/zenodo.49369)
+
+### Description
 SeqLighter is a dynamic sequence viewer plugin implemented using the [BioJS framework](http://biojs.net/).
 
 The plugin is currently set up to work with feature tracks that use the `trackType` **HTMLFeatures**, and represent the `featureType` **mRNA** and their subfeatures (`five_prime_UTR`, `three_prime_UTR`, `exon`, `CDS`). 
